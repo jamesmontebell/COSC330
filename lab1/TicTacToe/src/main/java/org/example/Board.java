@@ -10,23 +10,37 @@ public class Board {
             {" ", " ", " "}
     };
 
-    public void insertX(int row, int columns){
-        if(matrix[row][columns] == " "){
+    public boolean insertX(int row, int columns){
+        if(row > 2 || columns > 2)
+        {
+            System.out.println("Out of range");
+            return false;
+        }
+        else if(matrix[row][columns] == " "){
             matrix[row][columns] = "X";
+            return true;
         }
         else
         {
             System.out.println("Invalid");
+            return false;
         }
     }
 
-    public void insertO(int row, int columns){
-        if(matrix[row][columns] == " "){
+    public boolean insertO(int row, int columns){
+        if(row > 2 || columns > 2)
+        {
+            System.out.println("Out of range");
+            return false;
+        }
+        else if(matrix[row][columns] == " "){
             matrix[row][columns] = "O";
+            return true;
         }
         else
         {
             System.out.println("Invalid");
+            return false;
         }
     }
 
@@ -37,12 +51,14 @@ public class Board {
             {
                 System.out.print(matrix[0][0] + " WINS!");
                 //WINS
+                printBoard();
                 return true;
             }
             else if(matrix[0][i] == matrix[1][i] && matrix[1][i] == matrix[2][i] && matrix[0][i] != " ")
             {
                 System.out.print(matrix[0][0] + " WINS!");
                 //WINS
+                printBoard();
                 return true;
             }
         }
@@ -50,12 +66,14 @@ public class Board {
        {
            // matrix[0][0] wins
            System.out.print(matrix[0][0] + " WINS!");
+           printBoard();
            return true;
        }
        else if(matrix[0][0] == matrix[1][1]  && matrix[1][1] == matrix[2][2] && matrix[2][0] != " ")
        {
            // matrix[2][0] wins
            System.out.print(matrix[0][0] + " WINS!");
+           printBoard();
            return true;
         }
        else
