@@ -49,14 +49,14 @@ public class Board {
         {
             if(matrix[i][0] == matrix[i][1] && matrix[i][1] == matrix[i][2] && matrix[i][0] != " ")
             {
-                System.out.print(matrix[0][0] + " WINS!");
+                System.out.println(matrix[i][0] + " WINS!");
                 //WINS
                 printBoard();
                 return true;
             }
             else if(matrix[0][i] == matrix[1][i] && matrix[1][i] == matrix[2][i] && matrix[0][i] != " ")
             {
-                System.out.print(matrix[0][0] + " WINS!");
+                System.out.println(matrix[0][i] + " WINS!");
                 //WINS
                 printBoard();
                 return true;
@@ -65,14 +65,14 @@ public class Board {
        if(matrix[0][0] ==  matrix[1][1] && matrix[1][1] == matrix[2][2] && matrix[0][0] != " ")
        {
            // matrix[0][0] wins
-           System.out.print(matrix[0][0] + " WINS!");
+           System.out.println(matrix[0][0] + " WINS!");
            printBoard();
            return true;
        }
-       else if(matrix[0][0] == matrix[1][1]  && matrix[1][1] == matrix[2][2] && matrix[2][0] != " ")
+       else if(matrix[2][0] == matrix[1][1] && matrix[1][1] == matrix[0][2] && matrix[2][0] != " ")
        {
            // matrix[2][0] wins
-           System.out.print(matrix[0][0] + " WINS!");
+           System.out.println(matrix[2][0] + " WINS!");
            printBoard();
            return true;
         }

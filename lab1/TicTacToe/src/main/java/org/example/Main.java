@@ -6,14 +6,7 @@ public class Main {
 
         Scanner scan= new Scanner(System.in);
         Board game = new Board();
-
-
-//        b.printBoard();
-//        b.insertX(0, 0);
-//        b.insertX(1, 1);
-//        b.insertX(2, 2);
-//        b.printBoard();
-//        boolean win = b.checkWin();
+        int turn = 0;
 
         while(true)
         {
@@ -33,12 +26,20 @@ public class Main {
                 boolean i = game.insertX(row, column);
                 if(i)
                 {
+                    turn++;
                     break;
                 }
                 else
                 {
                     game.printBoard();
                 }
+            }
+
+            if(turn == 9)
+            {
+                game.printBoard();
+                System.out.println("DRAW!");
+                break;
             }
 
             game.printBoard();
@@ -56,6 +57,7 @@ public class Main {
                 boolean i = game.insertO(row, column);
                 if(i)
                 {
+                    turn++;
                     break;
                 }
                 else
@@ -69,5 +71,4 @@ public class Main {
             }
         }
     }
-
 }
