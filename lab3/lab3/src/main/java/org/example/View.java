@@ -9,6 +9,7 @@ public class View {
     private JTextArea turn;
     private JButton[][] buttons;
     private String playersTurn = "X";
+    private int turnCount = 0;
     public View(){
         frame = new JFrame("TicTacToe");
         frame.setLayout(new GridBagLayout());
@@ -68,6 +69,25 @@ public class View {
         {
             turn.setText("Player O wins!");
         }
+    }
+    public int addTurn()
+    {
+        return turnCount++;
+    }
+
+    public int getTurnCount()
+    {
+        return turnCount;
+    }
+
+    public void displayDraw()
+    {
+        turn.setText("DRAW!");
+    }
+
+    public void setPlayersTurnDisplay(String s)
+    {
+        turn.setText("Player "+s+ "'s turn!");
     }
 
 

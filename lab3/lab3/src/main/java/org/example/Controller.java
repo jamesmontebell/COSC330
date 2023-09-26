@@ -26,6 +26,7 @@ public class Controller {
             {
                 myButton.setText("X");
                 view.setPlayersTurn("O");
+                view.setPlayersTurnDisplay("O");
                 String[] pos = myButton.getName().split("");
 
                 int x = Integer.parseInt(pos[0]);
@@ -34,11 +35,14 @@ public class Controller {
                 model.getBoard().insertX(x, y);
                 model.getBoard().printBoard();
 
+                view.addTurn();
+
             }
             else if (view.getPlayersTurn() == "O" && myButton.getText() == "")
             {
                 myButton.setText("O");
                 view.setPlayersTurn("X");
+                view.setPlayersTurnDisplay("X");
                 String[] pos = myButton.getName().split("");
 
                 int x = Integer.parseInt(pos[0]);
@@ -46,11 +50,20 @@ public class Controller {
 
                 model.getBoard().insertO(x, y);
                 model.getBoard().printBoard();
+                view.addTurn();
             }
             if(model.checkWin())
             {
                 String winner = model.getWin();
                 view.displayWin(winner);
+            }
+            else
+            {
+                if(view.getTurnCount() == 9)
+                {
+                    view.displayDraw();
+                }
+
             }
         }
     }
