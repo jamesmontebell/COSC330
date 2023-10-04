@@ -29,7 +29,18 @@ public class Main {
             int row= scan.nextInt();
             System.out.println("PLayer 1 enter column: ");
             int column = scan.nextInt();
+
             board1.shoot(row, column, board2);
+            if(board1.checkWin())
+            {
+                System.out.println("Player 1 wins!");
+                break;
+            }
+            else if (board2.checkWin())
+            {
+                System.out.println("Player 2 wins!");
+                break;
+            }
 
             System.out.println("PLayer 2 enter row: ");
             int row2= scan.nextInt();
