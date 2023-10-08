@@ -4,15 +4,15 @@ public class Course {
     private String title;
     private String instructor;
     private String[] students;
-    private Sort st;
+    private Sort srt;
 
     public Course(Sort st){
-        this.st = st;
+        this.srt = st;
     }
 
-    public void sort()
+    public void coursesort()
     {
-        st.sort();
+        srt.sort();
     }
 
 
