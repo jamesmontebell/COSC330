@@ -15,6 +15,8 @@ public class View {
     private JButton[][] oppButtons;
     private JLabel[][] myGrid;
     private JLabel[] myShips;
+    private JButton rand;
+    private String turn;
 
 
     public View() {
@@ -24,8 +26,8 @@ public class View {
         frame.setMaximumSize(new Dimension(750, 800));
         frame.setMinimumSize(new Dimension(750, 800));
         frame.setBackground(new Color(11, 19, 30));
+        frame.setLocationRelativeTo(null);
         getRootPane(frame).setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.GRAY));
-
 
         myGame = new JPanel();
         myGame.setLayout(new GridLayout(10, 10));
@@ -50,6 +52,7 @@ public class View {
         myGrid = new JLabel[10][10];
         oppButtons = new JButton[10][10];
         myShips = new JLabel[5];
+        rand = new JButton();
 
 
         for (int i=0; i < 10; i++) {
@@ -70,7 +73,6 @@ public class View {
                 oppButtons[i][j].setForeground(Color.white);
                 oppButtons[i][j].setBorder(BorderFactory.createLineBorder(Color.GRAY));
                 oppGame.add(oppButtons[i][j]);
-
             }
         }
 
@@ -80,17 +82,15 @@ public class View {
             shipPanel.add(myShips[i]);
         }
 
-        myGrid[9][0].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_bottom.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
-        myGrid[8][0].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_middle.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
-        myGrid[7][0].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_top.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
-
         myShips[0].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_two.png").getImage().getScaledInstance(32, 64, Image.SCALE_SMOOTH)));
         myShips[1].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_three.png").getImage().getScaledInstance(32, 96, Image.SCALE_SMOOTH)));
         myShips[2].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_three.png").getImage().getScaledInstance(32, 96, Image.SCALE_SMOOTH)));
         myShips[3].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_four.png").getImage().getScaledInstance(32, 128, Image.SCALE_SMOOTH)));
         myShips[4].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_five.png").getImage().getScaledInstance(32, 160, Image.SCALE_SMOOTH)));
 
+//        myGrid[7][0].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_top.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
 
+        userPanel.add(rand);
         frame.add(oppGame);
         frame.add(userPanel);
         frame.add(myGame);
@@ -99,4 +99,42 @@ public class View {
         frame.pack();
         frame.setVisible(true);
     }
+    public void setListeners(ActionListener l) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                oppButtons[i][j].addActionListener(l);
+            }
+        }
+    }
+
+    public void setRandomListener(ActionListener l)
+    {
+        rand.addActionListener(l);
+    }
+
+    public void setTurn(String t)
+    {
+        turn = t;
+    }
+
+    public JLabel[][] getMyGrid()
+    {
+        return myGrid;
+    }
+
+    public void setMyGrid(JLabel[][] g)
+    {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                myGrid[i][j] = g[i][j];
+            }
+        }
+    }
+
+    public void createDestroyer()
+    {
+        Destroyer d = new Destroyer(2, "Destroyer");
+        myGrid[8][0].setIcon(d.getFront().getIcon());
+    }
+
 }

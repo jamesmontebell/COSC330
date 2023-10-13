@@ -1,5 +1,5 @@
-package org.example;
 
+package org.example;
 // Fig. 24.7: Client.java
 // Client that reads and displays information sent from a Server.
 import java.io.EOFException;
@@ -81,7 +81,7 @@ public class Client extends JFrame
     } // end method runClient
 
     // connect to server
-    private void connectToServer() throws IOException
+    public void connectToServer() throws IOException
     {
         displayMessage( "Attempting connection\n" );
 
@@ -94,7 +94,7 @@ public class Client extends JFrame
     } // end method connectToServer
 
     // get streams to send and receive data
-    private void getStreams() throws IOException
+    public void getStreams() throws IOException
     {
         // set up output stream for objects
         output = new ObjectOutputStream( client.getOutputStream() );
@@ -107,7 +107,7 @@ public class Client extends JFrame
     } // end method getStreams
 
     // process connection with server
-    private void processConnection() throws IOException
+    public String processConnection() throws IOException
     {
         // enable enterField so client user can send messages
         setTextFieldEditable( true );
@@ -117,7 +117,8 @@ public class Client extends JFrame
             try // read message and display it
             {
                 message = ( String ) input.readObject(); // read new message
-                displayMessage( "\n" + message ); // display message
+                //displayMessage( "\n" + message ); // display message
+                return message;
             } // end try
             catch ( ClassNotFoundException classNotFoundException )
             {
@@ -125,6 +126,7 @@ public class Client extends JFrame
             } // end catch
 
         } while ( !message.equals( "SERVER>>> TERMINATE" ) );
+        return null;
     } // end method processConnection
 
     // close streams and socket
@@ -146,7 +148,7 @@ public class Client extends JFrame
     } // end method closeConnection
 
     // send message to server
-    private void sendData( String message )
+    public void sendData( String message )
     {
         try // send object to server
         {
@@ -203,3 +205,4 @@ public class Client extends JFrame
  * consequential damages in connection with, or arising out of, the       *
  * furnishing, performance, or use of these programs.                     *
  *************************************************************************/
+

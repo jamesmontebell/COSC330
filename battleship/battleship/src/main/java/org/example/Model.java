@@ -8,6 +8,8 @@ public class Model {
     private int totalShips;
     private int totalHits;
 
+    private int turn;
+
 
     Model()
     {
@@ -108,6 +110,20 @@ public class Model {
         }
     }
 
+    public boolean recieveHit(String check){
+        int hit = Integer.parseInt(check);
+        if(hit == 0){
+            return false;
+        }
+        else if(hit == 1){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
     public boolean checkWin()
     {
         if(totalHits == 17)
@@ -130,6 +146,16 @@ public class Model {
         {
             return false;
         }
+    }
+
+    public int getTurn()
+    {
+        return turn;
+    }
+
+    public void setTurn(int x)
+    {
+        turn = x;
     }
 
     public void printBoard(){
