@@ -43,13 +43,13 @@ public class View {
         userPanel.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.GRAY));
 
         shipPanel = new JPanel();
-        shipPanel.setLayout(new GridLayout(3, 2, 10, 10));
+        shipPanel.setLayout(new GridLayout(2, 3, 10, 30));
         shipPanel.setBackground(new Color(11, 19, 30));
         shipPanel.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.GRAY));
 
         myGrid = new JLabel[10][10];
         oppButtons = new JButton[10][10];
-        myShips = new JLabel[12];
+        myShips = new JLabel[5];
 
 
         for (int i=0; i < 10; i++) {
@@ -65,7 +65,6 @@ public class View {
                 oppButtons[i][j] = new JButton();
                 oppButtons[i][j].setPreferredSize(new Dimension(50, 50));
                 oppButtons[i][j].setName(i + "" + j);
-//                oppButtons[i][j].setBorderPainted(false);
                 oppButtons[i][j].setOpaque(true);
                 oppButtons[i][j].setBackground(new Color(11, 19, 30));
                 oppButtons[i][j].setForeground(Color.white);
@@ -75,9 +74,21 @@ public class View {
             }
         }
 
+        for(int i = 0; i < 5 ; i++)
+        {
+            myShips[i] = new JLabel();
+            shipPanel.add(myShips[i]);
+        }
+
         myGrid[9][0].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_bottom.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
         myGrid[8][0].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_middle.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
         myGrid[7][0].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_top.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+
+        myShips[0].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_two.png").getImage().getScaledInstance(32, 64, Image.SCALE_SMOOTH)));
+        myShips[1].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_three.png").getImage().getScaledInstance(32, 96, Image.SCALE_SMOOTH)));
+        myShips[2].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_three.png").getImage().getScaledInstance(32, 96, Image.SCALE_SMOOTH)));
+        myShips[3].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_four.png").getImage().getScaledInstance(32, 128, Image.SCALE_SMOOTH)));
+        myShips[4].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_five.png").getImage().getScaledInstance(32, 160, Image.SCALE_SMOOTH)));
 
 
         frame.add(oppGame);
