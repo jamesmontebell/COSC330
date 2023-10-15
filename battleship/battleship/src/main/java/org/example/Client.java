@@ -1,4 +1,3 @@
-
 package org.example;
 // Fig. 24.7: Client.java
 // Client that reads and displays information sent from a Server.
@@ -81,7 +80,7 @@ public class Client extends JFrame
     } // end method runClient
 
     // connect to server
-    public void connectToServer() throws IOException
+    private void connectToServer() throws IOException
     {
         displayMessage( "Attempting connection\n" );
 
@@ -94,7 +93,7 @@ public class Client extends JFrame
     } // end method connectToServer
 
     // get streams to send and receive data
-    public void getStreams() throws IOException
+    private void getStreams() throws IOException
     {
         // set up output stream for objects
         output = new ObjectOutputStream( client.getOutputStream() );
@@ -107,7 +106,7 @@ public class Client extends JFrame
     } // end method getStreams
 
     // process connection with server
-    public String processConnection() throws IOException
+    private void processConnection() throws IOException
     {
         // enable enterField so client user can send messages
         setTextFieldEditable( true );
@@ -117,8 +116,7 @@ public class Client extends JFrame
             try // read message and display it
             {
                 message = ( String ) input.readObject(); // read new message
-                //displayMessage( "\n" + message ); // display message
-                return message;
+                displayMessage( "\n" + message ); // display message
             } // end try
             catch ( ClassNotFoundException classNotFoundException )
             {
@@ -126,8 +124,8 @@ public class Client extends JFrame
             } // end catch
 
         } while ( !message.equals( "SERVER>>> TERMINATE" ) );
-        return null;
     } // end method processConnection
+
 
     // close streams and socket
     private void closeConnection()
@@ -176,6 +174,26 @@ public class Client extends JFrame
         ); // end call to SwingUtilities.invokeLater
     } // end method displayMessage
 
+    public String getMessage()
+    {
+        return message;
+    }
+
+    private String recieveMessage( final String messageToDisplay )
+    {
+        SwingUtilities.invokeLater(
+                new Runnable()
+                {
+                    public void run() // updates displayArea
+                    {
+                        displayArea.append( messageToDisplay );
+                    } // end method run
+                }  // end anonymous inner class
+        );// end call to SwingUtilities.invokeLater
+        return messageToDisplay;
+    } // end method displayMessage
+
+
     // manipulates enterField in the event-dispatch thread
     private void setTextFieldEditable( final boolean editable )
     {
@@ -205,4 +223,3 @@ public class Client extends JFrame
  * consequential damages in connection with, or arising out of, the       *
  * furnishing, performance, or use of these programs.                     *
  *************************************************************************/
-

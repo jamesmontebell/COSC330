@@ -22,21 +22,16 @@ public class Controller{
     {
         model = m;
         view = v;
+        v.setListeners(new ActionOnClick());
+        v.setRandomListener(new RandomOnClick());
         application = new Client("127.0.0.0");
         application.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         application.runClient(); // run client application
-        v.setListeners(new ActionOnClick());
-        v.setRandomListener(new RandomOnClick());
     }
 
     public void waitForServer()
     {
-        try {
-            message = application.processConnection();
-        } catch (IOException e) {
-
-            e.printStackTrace();
-        }
+        message = application.getMessage();
         String[] split2 = message.toString().split("");
         int x = Integer.parseInt(split2[0]);
         int y = Integer.parseInt(split2[1]);
@@ -62,12 +57,7 @@ public class Controller{
             JButton but = (JButton)event.getSource();
             if(model.getTurn() == 0){
                 application.sendData(but.getName() + 1);
-                try {
-                    message = application.processConnection();
-                } catch (IOException e) {
 
-                    e.printStackTrace();
-                }
                 if(model.recieveHit(message)){
                     but.setBackground(Color.RED);
                 }
