@@ -1,7 +1,7 @@
 package org.example;
 
 // Fig. 24.5: Server.java
-// Set up a Server that will receive a connection from a client, send
+// Set up a Server that will receive a connection from a client, send 
 // a string to the client, and close the connection.
 import java.io.EOFException;
 import java.io.IOException;
@@ -27,8 +27,7 @@ public class Server extends JFrame
     private ServerSocket server; // server socket
     private Socket connection; // connection to client
     private int counter = 1; // counter of number of connections
-    private String message;
-
+    String message = "";
     // set up GUI
     public Server()
     {
@@ -64,24 +63,24 @@ public class Server extends JFrame
         {
             server = new ServerSocket( 12345, 100 ); // create ServerSocket
 
-            while ( true )
+            //while ( true )
+            //{
+            try
             {
-                try
-                {
-                    waitForConnection(); // wait for a connection
-                    getStreams(); // get input & output streams
-                    processConnection(); // process connection
-                } // end try
-                catch ( EOFException eofException )
-                {
-                    displayMessage( "\nServer terminated connection" );
-                } // end catch
-                finally
-                {
-                    closeConnection(); //  close connection
-                    counter++;
-                } // end finally
-            } // end while
+                waitForConnection(); // wait for a connection
+                getStreams(); // get input & output streams
+                // processConnection(); // process connection
+            } // end try
+            catch ( EOFException eofException )
+            {
+                displayMessage( "\nServer terminated connection" );
+            } // end catch
+            finally
+            {
+                // closeConnection(); //  close connection
+                // counter++;
+            } // end finally
+            // } // end while
         } // end try
         catch ( IOException ioException )
         {
@@ -108,33 +107,36 @@ public class Server extends JFrame
         // set up input stream for objects
         input = new ObjectInputStream( connection.getInputStream() );
 
-        displayMessage( "\nGot I/O streams\n" );
+        // displayMessage( "\nGot I/O streams\n" );
     } // end method getStreams
 
     // process connection with client
-    private void processConnection() throws IOException
+    public void  processConnection() throws IOException
     {
-        String message = "Connection successful";
-        sendData( message ); // send connection successful message
+        String Message = "ConnectionSucc";
+        sendData( Message ); // send connection successful message
 
         // enable enterField so server user can send messages
         setTextFieldEditable( true );
 
-        do // process messages sent from client
+        // do // process messages sent from client
+        // {
+        try // read message and display it
         {
-            try // read message and display it
-            {
-                message = ( String ) input.readObject(); // read new message
-                displayMessage( "\n" + message );
-                // display message
-            } // end try
-            catch ( ClassNotFoundException classNotFoundException )
-            {
-                displayMessage( "\nUnknown object type received" );
-            } // end catch
+            message = ( String ) input.readObject();
+            // read new message
+            displayMessage( "\n" + message ); // display message
 
-        } while ( !message.equals( "CLIENT>>> TERMINATE" ) );
+        } // end try
+        catch ( ClassNotFoundException classNotFoundException )
+        {
+            displayMessage( "\nUnknown object type received" );
+        } // end catch
+
+        // } while ( !message.equals( "CLIENT>>> TERMINATE" ) );
+
     } // end method processConnection
+
 
     // close streams and socket
     private void closeConnection()
@@ -155,7 +157,7 @@ public class Server extends JFrame
     } // end method closeConnection
 
     // send message to client
-    private void sendData( String message )
+    public void sendData( String message )
     {
         try // send object to client
         {
@@ -183,12 +185,10 @@ public class Server extends JFrame
         ); // end call to SwingUtilities.invokeLater
     } // end method displayMessage
 
-    public String getMessage()
+    public String recieveMessage()
     {
         return message;
     }
-
-
     // manipulates enterField in the event-dispatch thread
     private void setTextFieldEditable( final boolean editable )
     {

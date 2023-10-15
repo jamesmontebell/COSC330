@@ -1,3 +1,4 @@
+
 package org.example;
 // Fig. 24.7: Client.java
 // Client that reads and displays information sent from a Server.
@@ -63,7 +64,7 @@ public class Client extends JFrame
         {
             connectToServer(); // create a Socket to make connection
             getStreams(); // get the input and output streams
-            processConnection(); // process connection
+            // processConnection(); // process connection
         } // end try
         catch ( EOFException eofException )
         {
@@ -73,14 +74,15 @@ public class Client extends JFrame
         {
             ioException.printStackTrace();
         } // end catch
-        finally
-        {
-            closeConnection(); // close connection
-        } // end finally
-    } // end method runClient
+        //       finally
+        //       {
+        //          closeConnection(); // close connection
+        //       } // end finally
+        //    } // end method runClient
+    }
 
     // connect to server
-    private void connectToServer() throws IOException
+    public void connectToServer() throws IOException
     {
         displayMessage( "Attempting connection\n" );
 
@@ -93,7 +95,7 @@ public class Client extends JFrame
     } // end method connectToServer
 
     // get streams to send and receive data
-    private void getStreams() throws IOException
+    public void getStreams() throws IOException
     {
         // set up output stream for objects
         output = new ObjectOutputStream( client.getOutputStream() );
@@ -106,29 +108,29 @@ public class Client extends JFrame
     } // end method getStreams
 
     // process connection with server
-    private void processConnection() throws IOException
+    public void processConnection() throws IOException
     {
         // enable enterField so client user can send messages
         setTextFieldEditable( true );
 
-        do // process messages sent from server
-        {
-            try // read message and display it
-            {
-                message = ( String ) input.readObject(); // read new message
-                displayMessage( "\n" + message ); // display message
-            } // end try
-            catch ( ClassNotFoundException classNotFoundException )
-            {
-                displayMessage( "\nUnknown object type received" );
-            } // end catch
 
-        } while ( !message.equals( "SERVER>>> TERMINATE" ) );
+        try // read message and display it
+        {
+            message = ( String ) input.readObject(); // read new message
+            displayMessage( "\n" + message ); // display message
+
+        } // end try
+        catch ( ClassNotFoundException classNotFoundException )
+        {
+            displayMessage( "\nUnknown object type received" );
+        } // end catch
+
+
+
     } // end method processConnection
 
-
     // close streams and socket
-    private void closeConnection()
+    public void closeConnection()
     {
         displayMessage( "\nClosing connection" );
         setTextFieldEditable( false ); // disable enterField
@@ -174,25 +176,10 @@ public class Client extends JFrame
         ); // end call to SwingUtilities.invokeLater
     } // end method displayMessage
 
-    public String getMessage()
+    public String recieveMessage()
     {
         return message;
     }
-
-    private String recieveMessage( final String messageToDisplay )
-    {
-        SwingUtilities.invokeLater(
-                new Runnable()
-                {
-                    public void run() // updates displayArea
-                    {
-                        displayArea.append( messageToDisplay );
-                    } // end method run
-                }  // end anonymous inner class
-        );// end call to SwingUtilities.invokeLater
-        return messageToDisplay;
-    } // end method displayMessage
-
 
     // manipulates enterField in the event-dispatch thread
     private void setTextFieldEditable( final boolean editable )
@@ -223,3 +210,4 @@ public class Client extends JFrame
  * consequential damages in connection with, or arising out of, the       *
  * furnishing, performance, or use of these programs.                     *
  *************************************************************************/
+
