@@ -1,9 +1,11 @@
 package org.example;
 
-public class Main {
+public class MainServer {
     public static void main(String[] args) {
+
+
         View v = new View();
         Model m = new Model();
-        Controller c = new Controller(m, v);
+        ControllerServer c = new ControllerServer(m, v);
     }
 }

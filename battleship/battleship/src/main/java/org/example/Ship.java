@@ -9,7 +9,7 @@ public class Ship {
         this.name = name;
     }
 
-    public int getLength()
+    public int getSize()
     {
         return length;
     }

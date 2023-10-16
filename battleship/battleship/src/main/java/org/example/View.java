@@ -15,7 +15,7 @@ public class View {
     private JButton[][] oppButtons;
     private JLabel[][] myGrid;
     private JLabel[] myShips;
-    private JButton rand;
+    public JButton rand;
     private String turn;
 
 

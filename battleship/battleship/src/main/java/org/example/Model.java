@@ -8,7 +8,7 @@ public class Model {
     private int totalShips;
     private int totalHits;
 
-    private int turn;
+    private String turn;
 
 
     Model()
@@ -30,6 +30,8 @@ public class Model {
 
         totalShips = 17;
         totalHits = 0;
+
+        turn = "Client";
     }
 
     public void placeRandom()
@@ -42,12 +44,12 @@ public class Model {
             boolean horizontal = (horiz == 1) ? true : false;
             do{
                 if(horizontal){
-                    shipCol = (int)(Math.random() * (9 - ships[i].getLength()+1 + 1));
+                    shipCol = (int)(Math.random() * (9 - ships[i].getSize()+1 + 1));
                     shipRow = (int)(Math.random() * (9 + 1));
                 }
                 else{
                     shipCol = (int)(Math.random() * (9 + 1));
-                    shipRow = (int)(Math.random() * (9-ships[i].getLength()+1 + 1));
+                    shipRow = (int)(Math.random() * (9-ships[i].getSize()+1 + 1));
                 }
               collides = placeShip(shipRow, shipCol, horizontal, ships[i]);
             }
@@ -56,10 +58,9 @@ public class Model {
     }
     public boolean placeShip( int row, int col, boolean horizontal, Ship ship)
     {
-        int length = ship.getLength();
+        int length = ship.getSize();
         int iter = horizontal ? col : row;
 
-        System.out.println(horizontal);
 
         for (int i = iter; i < iter+length; i++) {
             if(horizontal) {
@@ -148,14 +149,33 @@ public class Model {
         }
     }
 
-    public int getTurn()
+    public String getTurn()
     {
         return turn;
     }
 
-    public void setTurn(int x)
+    public void setTurn(String x)
     {
         turn = x;
+    }
+
+    public String[][] getMyBoard()
+    {
+        return myGrid;
+    }
+
+    public String[][] getBoard(){
+        return myGrid;
+    }
+    public Ship[] getShips(){
+        return ships;
+    }
+    public void setGridPos(int x, int y, String val)
+    {
+        myGrid[x][y] = val;
+    }
+    public String getPos(int x, int y){
+        return myGrid[x][y];
     }
 
     public void printBoard(){

@@ -152,9 +152,9 @@ public class Client extends JFrame
     {
         try // send object to server
         {
-            output.writeObject( "CLIENT>>> " + message );
+            output.writeObject(message );
             output.flush(); // flush data to output
-            displayMessage( "\nCLIENT>>> " + message );
+            displayMessage( message );
         } // end try
         catch ( IOException ioException )
         {

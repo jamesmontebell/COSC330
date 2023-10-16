@@ -1,42 +1,39 @@
 package org.example;
-
-import java.awt.Color;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import javax.swing.*;
 
-public class Controller{
+public class ControllerServer{
     private Model model;
     private View view;
-    Client application;
-
-    public Controller(Model m , View v)
+    Server application;
+    public ControllerServer(Model m , View v)
     {
         model = m;
         view = v;
         v.setListeners(new ActionOnClick());
         v.setRandomListener(new RandomOnClick());
-        application = new Client("127.0.0.1");
+        application = new Server();
         application.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-        application.runClient(); // run client application
+        application.runServer(); // run client application
         while(true){
             try {
                 application.processConnection();
-                waitForServer();
+                waitForClient();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+
             }
         }
     }
 
-    public void waitForServer()
-    {
-        if(model.getTurn() == "Server")
+    public void waitForClient() throws IOException {
+        if(model.getTurn() == "Client")
         {
-            // recieve shot from Server
+            // recieve shot from client
 
             String[] split2 = application.recieveMessage().split("");
             System.out.println(split2[0]+ split2[1]);
@@ -54,19 +51,21 @@ public class Controller{
             {
                 application.sendData("0");
             }
-            model.setTurn("Client");
-            view.setTurn("My turn!");
         }
-
+        model.setTurn("Server");
+        view.setTurn("My turn!");
     }
 
     private class ActionOnClick implements ActionListener{
         public void actionPerformed( ActionEvent event )
         {
             JButton but = (JButton)event.getSource();
-            if(model.getTurn() == "Client")
-            {
+            System.out.println(model.getTurn());
+
+            if(model.getTurn() == "Server"){
+
                 application.sendData(but.getName());
+                System.out.println("bruh");
 
                 try {
                     Thread.sleep(1000);
@@ -80,13 +79,12 @@ public class Controller{
                 else{
                     but.setBackground(Color.white);
                 }
-
-                model.setTurn("Server");
+                model.setTurn("Client");
                 view.setTurn("Opponent's turn!");
-
-            }
+              }
         }
     }
+
 
 
     private class RandomOnClick implements ActionListener{
@@ -175,4 +173,9 @@ public class Controller{
         return true;
     }
 
-}
+
+
+
+
+
+} 
