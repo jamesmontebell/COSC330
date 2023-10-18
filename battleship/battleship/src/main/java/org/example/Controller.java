@@ -2,20 +2,24 @@ package org.example;
 
 import java.awt.Color;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.IOException;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
 public class Controller{
     private Model model;
     private View view;
     Client application;
+    int myShips=17;
+
 
     public Controller(Model m , View v)
     {
         model = m;
         view = v;
+
         v.setListeners(new ActionOnClick());
         v.setRandomListener(new RandomOnClick());
         application = new Client("127.0.0.1");
@@ -32,8 +36,7 @@ public class Controller{
         }
     }
 
-    public void waitForServer()
-    {
+    public void waitForServer() {
         if(model.getTurn() == "Server")
         {
             // recieve shot from Server
@@ -49,13 +52,30 @@ public class Controller{
             if(hit)
             {
                 application.sendData("1");
+                myShips--;
+                // view change ship image
+                try {
+                    view.setHit(x, y);
+                } catch (UnsupportedAudioFileException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (LineUnavailableException e) {
+                    throw new RuntimeException(e);
+                }
+                if(myShips <= 0)
+                {
+                    //view display win
+                    view.displayWin("Server wins!");
+                }
             }
             else
             {
                 application.sendData("0");
+                view.missSound();
             }
             model.setTurn("Client");
-            view.setTurn("My turn!");
+            view.setTurn("Client's turn!");
         }
 
     }
@@ -82,7 +102,7 @@ public class Controller{
                 }
 
                 model.setTurn("Server");
-                view.setTurn("Opponent's turn!");
+                view.setTurn("Server's turn!");
 
             }
         }
@@ -91,7 +111,6 @@ public class Controller{
 
     private class RandomOnClick implements ActionListener{
         public void actionPerformed(ActionEvent e){
-            model.placeRandom();
             JLabel viewMyGrid[][] = view.getMyGrid();
             String modelMyBoard[][] = model.getMyBoard();
             Ship[] s = model.getShips();
@@ -102,6 +121,7 @@ public class Controller{
             }
 
             view.setMyGrid(viewMyGrid);
+            model.printBoard();
         }
     }
     public void placeRandomShip(Ship ship, JLabel[][] g) {

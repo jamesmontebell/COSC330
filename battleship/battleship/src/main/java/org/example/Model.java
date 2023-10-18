@@ -9,6 +9,7 @@ public class Model {
     private int totalHits;
 
     private String turn;
+    int count = 0;
 
 
     Model()
@@ -34,7 +35,7 @@ public class Model {
         turn = "Client";
     }
 
-    public void placeRandom()
+    public void placeRandom(Ship ship)
     {
         for(int i = 0; i < 5; i++)
         {
@@ -51,7 +52,7 @@ public class Model {
                     shipCol = (int)(Math.random() * (9 + 1));
                     shipRow = (int)(Math.random() * (9-ships[i].getSize()+1 + 1));
                 }
-              collides = placeShip(shipRow, shipCol, horizontal, ships[i]);
+              collides = placeShip(shipRow, shipCol, horizontal, ship);
             }
             while(!collides);
         }
@@ -176,6 +177,12 @@ public class Model {
     }
     public String getPos(int x, int y){
         return myGrid[x][y];
+    }
+    public void incrementCount(){
+        count++;
+    }
+    public void decrementCount(){
+        count--;
     }
 
     public void printBoard(){

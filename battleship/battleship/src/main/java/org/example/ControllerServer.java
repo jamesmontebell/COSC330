@@ -1,20 +1,62 @@
 package org.example;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.IOException;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
 public class ControllerServer{
     private Model model;
     private View view;
     Server application;
+    int myShips=17;
     public ControllerServer(Model m , View v)
     {
         model = m;
         view = v;
+        MouseListener mouseListener = new MouseAdapter() {
+            public void mousePressed(MouseEvent e)
+            {
+                JLabel c = (JLabel) e.getSource();
+                if(e.getButton() == MouseEvent.BUTTON3) {
+                    if(c.getIcon().toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_two.png")
+                        c.setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_two.png"));
+                    else if(c.getIcon().toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_three.png")
+                        c.setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_three.png"));
+                    else if(c.getIcon().toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_threetwo.png")
+                        c.setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_threetwo.png"));
+                    else if(c.getIcon().toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_four.png")
+                        c.setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_four.png"));
+                    else if(c.getIcon().toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_five.png")
+                        c.setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_five.png"));
+                    else if(c.getIcon().toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_two.png")
+                        c.setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_two.png"));
+                    else if(c.getIcon().toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_three.png")
+                        c.setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_three.png"));
+                    else if(c.getIcon().toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_threetwo.png")
+                        c.setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_threetwo.png"));
+                    else if(c.getIcon().toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_four.png")
+                        c.setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_four.png"));
+                    else if(c.getIcon().toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_five.png")
+                        c.setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_five.png"));
+                }
+
+                TransferHandler handler = c.getTransferHandler();
+                handler.exportAsDrag(c, e, TransferHandler.COPY); // export copy of clicked component: Can we add a ship class object to the components?
+
+            }
+
+            public void mouseExited(MouseEvent x) {
+                lookThrough();
+            }
+        };
+
         v.setListeners(new ActionOnClick());
         v.setRandomListener(new RandomOnClick());
+        v.setTransfer();
+        v.setMouseHandlers(mouseListener);
+
         application = new Server();
         application.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         application.runServer(); // run client application
@@ -26,11 +68,44 @@ public class ControllerServer{
                 // TODO Auto-generated catch block
                 e.printStackTrace();
 
+            } catch (UnsupportedAudioFileException e) {
+                throw new RuntimeException(e);
+            } catch (LineUnavailableException e) {
+                throw new RuntimeException(e);
             }
         }
     }
 
-    public void waitForClient() throws IOException {
+//    public void setDraggedImages()
+//    {
+//        JLabel[][] myGrid = view.getMyGrid();
+//        for(int i = 0; i < 10 ; i++)
+//        {
+//            for(int j = 0; j < 10; j++)
+//            {
+//                TransferHandler h = myGrid[i][j].getTransferHandler();
+//                Image c = h.getDragImage();
+//
+//                if(c.toString() == "v_five.png")
+//                {
+//                    myGrid[0][0].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_top.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+//                    for (int k = 0; k < model.getShips()[4].getSize()-2; k++) {
+//                        try {
+//                            myGrid[0+k+1][0].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_middle.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+//                            model.setGridPos(k, 0, " s ");
+//
+//                        } catch (Exception err) {
+//                            System.out.println("Couldn't set icon: " + err);
+//                        }
+//                    }
+//                    myGrid[0+model.getShips()[4].getSize()-1][0].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_bottom.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+//                }
+//            }
+//        }
+//        view.setMyGrid(myGrid);
+//    }
+
+    public void waitForClient() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         if(model.getTurn() == "Client")
         {
             // recieve shot from client
@@ -46,14 +121,24 @@ public class ControllerServer{
             if(hit)
             {
                 application.sendData("1");
+                myShips--;
+                // view change ship image
+                view.setHit(x, y);
+                if(myShips <= 0)
+                {
+                    //view display win
+                    view.displayWin("Client wins!");
+                }
             }
             else
             {
                 application.sendData("0");
+                view.missSound();
             }
+            model.setTurn("Server");
+            view.setTurn("Server's turn!");
         }
-        model.setTurn("Server");
-        view.setTurn("My turn!");
+
     }
 
     private class ActionOnClick implements ActionListener{
@@ -80,7 +165,7 @@ public class ControllerServer{
                     but.setBackground(Color.white);
                 }
                 model.setTurn("Client");
-                view.setTurn("Opponent's turn!");
+                view.setTurn("Client's turn!");
               }
         }
     }
@@ -89,7 +174,6 @@ public class ControllerServer{
 
     private class RandomOnClick implements ActionListener{
         public void actionPerformed(ActionEvent e){
-            model.placeRandom();
             JLabel viewMyGrid[][] = view.getMyGrid();
             String modelMyBoard[][] = model.getMyBoard();
             Ship[] s = model.getShips();
@@ -100,6 +184,7 @@ public class ControllerServer{
             }
 
             view.setMyGrid(viewMyGrid);
+            model.printBoard();
         }
     }
     public void placeRandomShip(Ship ship, JLabel[][] g) {
@@ -158,20 +243,211 @@ public class ControllerServer{
         int iter = horizontal ? col : row;
 
         // check if the ship will collide with any ships.
-        for (int i = iter; i < iter+length; i++) {
-            if(horizontal) {
-                if(model.getPos(row, i) == " s ") return false;}
-            else {
-                if(model.getPos(i, col) == " s ") return false; }
+        System.out.println("Rwo: " + row + ", col: " + col);
+        if(horizontal){
+            if((col+ship.getSize()-1) < 10) {
+                for (int i = iter; i < iter+length; i++) {
+                    if(horizontal) {
+                        if(model.getPos(row, i) == " s ") return false;
+                    }
+                }
+            }
+            else{
+                return false;
+            }
         }
+        else{
+            if(((row+ship.getSize()-1) < 10)){
+                for (int i = iter; i < iter+length; i++) {
+                    if(!horizontal) {
+                        if(model.getPos(row, i) == " s ") return false;}
+                }
+
+            }
+            else{
+                return false;
+            }
+        }
+
 
         //place the ship
         for (int i = iter; i < iter+length; i++) {
             if(horizontal) model.setGridPos(row, i, " s ");
             else model.setGridPos(i, col, " s ");
+            model.incrementCount();
         }
         return true;
     }
+
+    public void lookThrough(){
+        JLabel g[][] = view.getMyGrid();
+        Ship[] s = model.getShips();
+        for(int row = 0; row < 10; row++){
+            for(int col = 0; col < 10; col++){
+
+                if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_five.png"){
+
+                    if(placeShip(row,col, false, s[0])){
+                        draggedShip(row, col, s[0], g, false);
+                        view.removeCarrier();
+                    }
+                    else{
+                        g[row][col].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/trans.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+
+                    }
+                }
+                if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_five.png"){
+
+                    if(placeShip(row,col, true, s[0])){         // Works but even if horizontal, it drops the ship vertically
+                        draggedShip(row, col, s[0], g, true);
+                        view.removeCarrier();
+                    }
+                    else{
+                        g[row][col].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/trans.png.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+
+                    }
+                }
+                if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_four.png"){
+
+                    if(placeShip(row,col, false, s[1])){
+                        draggedShip(row, col, s[1], g, false);
+                        view.removeBattleship();
+                    }
+                    else{
+                        g[row][col].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/trans.png.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+
+                    }
+                }
+                if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_four.png"){
+
+                    if(placeShip(row,col, true, s[1])){
+                        draggedShip(row, col, s[1], g, true);
+                        view.removeBattleship();
+                    }
+                    else{
+                        g[row][col].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/trans.png.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+
+                    }
+                }
+                if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_three.png"){
+
+                    if(placeShip(row,col, false, s[2])){
+                        draggedShip(row, col, s[2], g, false);
+
+                        view.removeSubmarine();
+
+                    }
+                    else{
+                        g[row][col].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/trans.png.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+
+                    }
+                }
+                if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_three.png"){
+
+                    if(placeShip(row,col, true, s[2])){
+                        draggedShip(row, col, s[2], g, true);
+
+                        view.removeSubmarine();
+
+                    }
+                    else{
+                        g[row][col].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/trans.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+
+                    }
+                }
+                if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_threetwo.png"){
+
+                    if(placeShip(row,col, false, s[2])){
+                        draggedShip(row, col, s[2], g, false);
+
+                        view.removeCruiser();
+
+                    }
+                    else{
+                        g[row][col].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/trans.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+
+                    }
+                }
+                if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_threetwo.png"){
+
+                    if(placeShip(row,col, true, s[2])){
+                        draggedShip(row, col, s[2], g, true);
+
+                        view.removeCruiser();
+
+                    }
+                    else{
+                        g[row][col].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/trans.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+
+                    }
+                }
+                if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_two.png"){
+
+                    if(placeShip(row,col, false, s[4])){
+                        draggedShip(row, col, s[4], g, false);
+                        view.removeDestroyer();
+                    }
+                    else{
+                        g[row][col].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/trans.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+
+                    }
+                }
+                if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_two.png"){
+
+                    if(placeShip(row,col, true, s[4])){
+                        draggedShip(row, col, s[4], g, true);
+                        view.removeDestroyer();
+                    }
+                    else{
+                        g[row][col].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/trans.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+
+                    }
+                }
+
+            }
+        }
+        model.printBoard();
+        view.setMyGrid(g);
+    }
+    public void draggedShip(int boardRow, int boardCol, Ship ship, JLabel[][] g, boolean hor){
+        if(hor){
+            if((boardCol+ship.getSize()-1) < 10){
+                g[boardRow][boardCol].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_left.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+
+                for (int i = 0; i < ship.getSize()-2; i++) {
+                    try {
+                        g[boardRow][boardCol+i+1].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_middle.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+                        //model.setGridPos(boardRow, boardCol, 1);
+
+                    } catch (Exception err) {
+                        System.out.println("Couldn't set icon: " + err);
+                    }
+
+                }
+                g[boardRow][boardCol+ship.getSize()-1].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_right.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+
+            }
+        }
+        else{
+            if((boardRow+ship.getSize()-1) < 10){
+                g[boardRow][boardCol].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_top.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+
+                for (int i = 0; i < ship.getSize()-2; i++) {
+                    try {
+                        g[boardRow+i+1][boardCol].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_middle.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+                        //model.setGridPos(boardRow, boardCol, 1);
+
+                    } catch (Exception err) {
+                        System.out.println("Couldn't set icon: " + err);
+                    }
+
+                }
+                g[boardRow+ship.getSize()-1][boardCol].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_bottom.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+
+            }
+        }
+    }
+
 
 
 
