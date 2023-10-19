@@ -15,7 +15,7 @@ import static javax.swing.SwingUtilities.getRootPane;
 
 public class View {
     private JFrame frame;
-    private JPanel myGame;
+    public JPanel myGame;
     private JPanel oppGame;
     private JPanel shipPanel;
     private JPanel userPanel;
@@ -24,14 +24,9 @@ public class View {
     private JLabel[][] myGrid;
     private JLabel[] myShips;
     public JButton rand;
+    public JButton clear;
     private String turn = "Client's turn";
     private JTextArea displayTurn;
-
-    JLabel carrier = new JLabel();
-    JLabel battleship = new JLabel();
-    JLabel cruiser = new JLabel();
-    JLabel submarine = new JLabel();
-    JLabel destroyer = new JLabel();
 
 
     public View() {
@@ -67,7 +62,7 @@ public class View {
         userPanel.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.GRAY));
 
         shipPanel = new JPanel();
-        shipPanel.setLayout(new GridLayout(2, 3, 10, 30));
+        shipPanel.setLayout(new GridLayout(2, 3 ));
         shipPanel.setBackground(new Color(11, 19, 30));
         shipPanel.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.GRAY));
 
@@ -84,8 +79,10 @@ public class View {
         myShips = new JLabel[5];
         rand = new JButton();
         displayTurn = new JTextArea();
+        clear = new JButton();
 
         rand.setText("Randomize Ships");
+        clear.setText("Clear Board");
         displayTurn.setText(turn);
         displayTurn.setEditable(false);
 
@@ -98,6 +95,7 @@ public class View {
                 myGrid[i][j].setBackground(new Color(11, 19, 30));
                 myGrid[i][j].setForeground(Color.white);
                 myGrid[i][j].setBorder(BorderFactory.createLineBorder(Color.GRAY));
+                myGrid[i][j].setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/trans.png"));
                 myGame.add(myGrid[i][j]);
 
                 oppButtons[i][j] = new JButton();
@@ -118,15 +116,14 @@ public class View {
         }
 
         myShips[0].setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_two.png"));
-        myShips[1].setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_three.png"));
+        myShips[1].setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_threetwo.png"));
         myShips[2].setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_three.png"));
         myShips[3].setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_four.png"));
         myShips[4].setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_five.png"));
 
-//        myGrid[7][0].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_top.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
-
         userPanel.add(rand);
         userPanel.add(displayTurn);
+        userPanel.add(clear);
 
         parentPanel.add(myGame);
         parentPanel.add(shipPanel);
@@ -236,8 +233,9 @@ public class View {
 
         }
     }
-    public void missSound()
+    public void missSound(int x, int y)
     {
+        myGrid[x][y].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/white.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
         try {
             AudioInputStream audioInputStream =
                     AudioSystem.getAudioInputStream(new File("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/miss.wav").getAbsoluteFile());
@@ -264,39 +262,67 @@ public class View {
     }
 
     public void removeCarrier(){
-        myShips[4].setIcon(null);
-        myShips[4].setTransferHandler(null);
+//        myShips[4].setIcon(null);
+//        myShips[4].setTransferHandler(null);
         shipPanel.remove(myShips[4]);
         shipPanel.revalidate();
         shipPanel.repaint();
     }
     public void removeDestroyer(){
-        myShips[0].setIcon(null);
-        myShips[0].setTransferHandler(null);
+//        myShips[0].setIcon(null);
+//        myShips[0].setTransferHandler(null);
         shipPanel.remove(myShips[0]);
         shipPanel.revalidate();
         shipPanel.repaint();
     }
     public void removeSubmarine(){
-        myShips[1].setIcon(null);
-        myShips[1].setTransferHandler(null);
+//        myShips[1].setIcon(null);
+//        myShips[1].setTransferHandler(null);
         shipPanel.remove(myShips[1]);
         shipPanel.revalidate();
         shipPanel.repaint();
     }
     public void removeBattleship(){
-        myShips[3].setIcon(null);
-        myShips[3].setTransferHandler(null);
+//        myShips[3].setIcon(null);
+//        myShips[3].setTransferHandler(null);
         shipPanel.remove(myShips[3]);
         shipPanel.revalidate();
         shipPanel.repaint();
     }
     public void removeCruiser(){
-        myShips[2].setIcon(null);
-        myShips[2].setTransferHandler(null);
+//        myShips[2].setIcon(null);
+//        myShips[2].setTransferHandler(null);
         shipPanel.remove(myShips[2]);
         shipPanel.revalidate();
         shipPanel.repaint();
+    }
+
+    public void clearBoard()
+    {
+        for(int i = 0; i < 10; i++) {
+            for(int j = 0; j < 10; j++) {
+                myGrid[i][j].setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/trans.png"));
+            }
+        }
+
+        myShips[0].setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_two.png"));
+        myShips[1].setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_threetwo.png"));
+        myShips[2].setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_three.png"));
+        myShips[3].setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_four.png"));
+        myShips[4].setIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_five.png"));
+        shipPanel.add(myShips[0]);
+        shipPanel.add(myShips[1]);
+        shipPanel.add(myShips[2]);
+        shipPanel.add(myShips[3]);
+        shipPanel.add(myShips[4]);
+        shipPanel.repaint();
+        shipPanel.revalidate();
+        parentPanel.add(shipPanel);
+    }
+
+    public void setClearListener(ActionListener l)
+    {
+        clear.addActionListener(l);
     }
 
 }

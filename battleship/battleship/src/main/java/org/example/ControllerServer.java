@@ -56,6 +56,7 @@ public class ControllerServer{
         v.setRandomListener(new RandomOnClick());
         v.setTransfer();
         v.setMouseHandlers(mouseListener);
+        v.setClearListener(new ClearOnClick());
 
         application = new Server();
         application.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
@@ -76,34 +77,6 @@ public class ControllerServer{
         }
     }
 
-//    public void setDraggedImages()
-//    {
-//        JLabel[][] myGrid = view.getMyGrid();
-//        for(int i = 0; i < 10 ; i++)
-//        {
-//            for(int j = 0; j < 10; j++)
-//            {
-//                TransferHandler h = myGrid[i][j].getTransferHandler();
-//                Image c = h.getDragImage();
-//
-//                if(c.toString() == "v_five.png")
-//                {
-//                    myGrid[0][0].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_top.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
-//                    for (int k = 0; k < model.getShips()[4].getSize()-2; k++) {
-//                        try {
-//                            myGrid[0+k+1][0].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_middle.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
-//                            model.setGridPos(k, 0, " s ");
-//
-//                        } catch (Exception err) {
-//                            System.out.println("Couldn't set icon: " + err);
-//                        }
-//                    }
-//                    myGrid[0+model.getShips()[4].getSize()-1][0].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_bottom.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
-//                }
-//            }
-//        }
-//        view.setMyGrid(myGrid);
-//    }
 
     public void waitForClient() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         if(model.getTurn() == "Client")
@@ -133,7 +106,7 @@ public class ControllerServer{
             else
             {
                 application.sendData("0");
-                view.missSound();
+                view.missSound(x, y);
             }
             model.setTurn("Server");
             view.setTurn("Server's turn!");
@@ -174,10 +147,12 @@ public class ControllerServer{
 
     private class RandomOnClick implements ActionListener{
         public void actionPerformed(ActionEvent e){
+            view.clearBoard();
+            model.clearBoard();
             JLabel viewMyGrid[][] = view.getMyGrid();
             String modelMyBoard[][] = model.getMyBoard();
-            Ship[] s = model.getShips();
             view.rand.setEnabled(false);
+            Ship[] s = model.getShips();
 
             for(int i = 0; i <5; i++){
                 placeRandomShip(s[i], viewMyGrid);
@@ -185,6 +160,17 @@ public class ControllerServer{
 
             view.setMyGrid(viewMyGrid);
             model.printBoard();
+            view.myGame.repaint();
+            view.myGame.revalidate();
+        }
+    }
+
+    private class ClearOnClick implements ActionListener{
+        public void actionPerformed(ActionEvent e){
+            view.clearBoard();
+            model.clearBoard();
+            view.myGame.repaint();
+            view.myGame.revalidate();
         }
     }
     public void placeRandomShip(Ship ship, JLabel[][] g) {
@@ -287,19 +273,23 @@ public class ControllerServer{
 
                 if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_five.png"){
 
-                    if(placeShip(row,col, false, s[0])){
-                        draggedShip(row, col, s[0], g, false);
+                    if(placeShip(row,col, false, s[4])){
+                        draggedShip(row, col, s[4], g, false);
                         view.removeCarrier();
                     }
-                    else{
+//                    else if (g[row][col].getIcon().toString() != "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/trans.png")
+//                    {
+//                        g[row][col].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_middle.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
+//                    }
+                    else
+                    {
                         g[row][col].setIcon(new ImageIcon(new ImageIcon("/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/trans.png").getImage().getScaledInstance(32, 32, Image.SCALE_SMOOTH)));
-
                     }
                 }
                 if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_five.png"){
 
-                    if(placeShip(row,col, true, s[0])){         // Works but even if horizontal, it drops the ship vertically
-                        draggedShip(row, col, s[0], g, true);
+                    if(placeShip(row,col, true, s[4])){         // Works but even if horizontal, it drops the ship vertically
+                        draggedShip(row, col, s[4], g, true);
                         view.removeCarrier();
                     }
                     else{
@@ -309,8 +299,8 @@ public class ControllerServer{
                 }
                 if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_four.png"){
 
-                    if(placeShip(row,col, false, s[1])){
-                        draggedShip(row, col, s[1], g, false);
+                    if(placeShip(row,col, false, s[3])){
+                        draggedShip(row, col, s[3], g, false);
                         view.removeBattleship();
                     }
                     else{
@@ -320,8 +310,8 @@ public class ControllerServer{
                 }
                 if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_four.png"){
 
-                    if(placeShip(row,col, true, s[1])){
-                        draggedShip(row, col, s[1], g, true);
+                    if(placeShip(row,col, true, s[3])){
+                        draggedShip(row, col, s[3], g, true);
                         view.removeBattleship();
                     }
                     else{
@@ -334,7 +324,7 @@ public class ControllerServer{
                     if(placeShip(row,col, false, s[2])){
                         draggedShip(row, col, s[2], g, false);
 
-                        view.removeSubmarine();
+                        view.removeCruiser();
 
                     }
                     else{
@@ -347,7 +337,7 @@ public class ControllerServer{
                     if(placeShip(row,col, true, s[2])){
                         draggedShip(row, col, s[2], g, true);
 
-                        view.removeSubmarine();
+                        view.removeCruiser();
 
                     }
                     else{
@@ -357,10 +347,10 @@ public class ControllerServer{
                 }
                 if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_threetwo.png"){
 
-                    if(placeShip(row,col, false, s[2])){
-                        draggedShip(row, col, s[2], g, false);
+                    if(placeShip(row,col, false, s[1])){
+                        draggedShip(row, col, s[1], g, false);
 
-                        view.removeCruiser();
+                        view.removeSubmarine();
 
                     }
                     else{
@@ -370,10 +360,10 @@ public class ControllerServer{
                 }
                 if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_threetwo.png"){
 
-                    if(placeShip(row,col, true, s[2])){
-                        draggedShip(row, col, s[2], g, true);
+                    if(placeShip(row,col, true, s[1])){
+                        draggedShip(row, col, s[1], g, true);
 
-                        view.removeCruiser();
+                        view.removeSubmarine();
 
                     }
                     else{
@@ -383,8 +373,8 @@ public class ControllerServer{
                 }
                 if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/v_two.png"){
 
-                    if(placeShip(row,col, false, s[4])){
-                        draggedShip(row, col, s[4], g, false);
+                    if(placeShip(row,col, false, s[0])){
+                        draggedShip(row, col, s[0], g, false);
                         view.removeDestroyer();
                     }
                     else{
@@ -394,8 +384,8 @@ public class ControllerServer{
                 }
                 if((g[row][col].getIcon()).toString() == "/Users/jamesmontebell/Github/cosc330/battleship/battleship/src/main/java/org/example/images/h_two.png"){
 
-                    if(placeShip(row,col, true, s[4])){
-                        draggedShip(row, col, s[4], g, true);
+                    if(placeShip(row,col, true, s[0])){
+                        draggedShip(row, col, s[0], g, true);
                         view.removeDestroyer();
                     }
                     else{

@@ -185,6 +185,15 @@ public class Model {
         count--;
     }
 
+    public void clearBoard()
+    {
+        for(int i = 0; i < 10; i++) {
+            for(int j = 0; j < 10; j++) {
+                myGrid[i][j] = "   ";
+            }
+        }
+    }
+
     public void printBoard(){
         System.out.println("Opponent Grid");
         System.out.println("-----------------------------------------");
